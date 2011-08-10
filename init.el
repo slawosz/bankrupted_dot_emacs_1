@@ -29,6 +29,7 @@
 (setq autoload-file (concat dotfiles-dir "loaddefs.el"))
 (setq package-user-dir (concat dotfiles-dir "elpa"))
 (setq custom-file (concat dotfiles-dir "custom.el"))
+;;(add-to-list 'load-path "elpa/emacs-jabber")
 
 (require 'package)
 (dolist (source '(("technomancy" . "http://repo.technomancy.us/emacs/")
@@ -61,6 +62,7 @@
 (require 'starter-kit-perl)
 (require 'starter-kit-ruby)
 (require 'starter-kit-js)
+(require 'jabber-autoloads)
 
 (regen-autoloads)
 (load custom-file 'noerror)
@@ -74,11 +76,42 @@
 (if (file-exists-p system-specific-config) (load system-specific-config))
 (if (file-exists-p user-specific-config) (load user-specific-config))
 (if (file-exists-p user-specific-dir)
-  (mapc #'load (directory-files user-specific-dir nil ".*el$")))
+    (mapc #'load (directory-files user-specific-dir nil ".*el$")))
 
 ;;scala
-(add-to-list 'load-path "~/scala-emacs")
-(require 'scala-mode-auto)
+;;(add-to-list 'load-path "elpa/scala")
+
+;;(require 'scala-mode-auto)
 (add-to-list 'load-path "~/.emacs.d/rspec-mode")
 (require 'rspec-mode)
 ;;; init.el ends here
+
+;;; my keybindings
+
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region)
+(global-set-key "\C-x\C-l" 'paredit-backward-delete)
+(global-set-key "\C-x\C-w" 'paredit-backward-delete)
+
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/rails-minor-mode"))
+(require 'rails)
+
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/rhtml-minor-mode"))
+(require 'rhtml-mode)
+
+(add-to-list 'load-path "~/.emacs.d/mo-git-blame")
+(autoload 'mo-git-blame-file "mo-git-blame" nil t)
+(autoload 'mo-git-blame-current "mo-git-blame" nil t)
+
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(if window-system (set-exec-path-from-shell-PATH))
+
+(require 'rvm)
