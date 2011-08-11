@@ -331,10 +331,10 @@
   "Returns string of options for command line"
   (let ((opts (if (listp opts)
                   opts
-                (list opts))))
-    (concat (when rspec-use-rake-flag "SPEC_OPTS=\'")
-            (mapconcat 'identity opts " ")
-            (when rspec-use-rake-flag "\'"))))
+                (list opts))))))
+    ;; (concat (when rspec-use-rake-flag "SPEC_OPTS=\'")
+    ;;         (mapconcat 'identity opts " ")
+    ;;         (when rspec-use-rake-flag "\'"))))
 
 (defun rspec-runner-target (target)
   "Returns target file/directory wrapped in SPEC if using rake"
@@ -374,7 +374,7 @@
 
 (defun rspec-run-single-file (spec-file &rest opts)
   "Runs spec on a file with the specified options"
-  (rspec-compile spec-file opts))
+  (rspec-compile spec-file))
 
 (defun rspec-compile (a-file-or-dir &optional opts)
   "Runs a compile for the specified file or diretory with the specified opts"
