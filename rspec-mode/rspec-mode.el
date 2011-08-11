@@ -322,9 +322,10 @@
 
 (defun rspec-runner ()
   "Returns command line to run rspec"
-  (if rspec-use-rake-flag
-      (concat rspec-rake-command " spec")
-    rspec-spec-command))
+  "bundle exec rspec")
+  ;; (if rspec-use-rake-flag
+  ;;     (concat rspec-rake-command " spec")
+  ;;   rspec-spec-command))
 
 (defun rspec-runner-options (&optional opts)
   "Returns string of options for command line"
@@ -373,7 +374,7 @@
 
 (defun rspec-run-single-file (spec-file &rest opts)
   "Runs spec on a file with the specified options"
-  (rspec-compile (rspec-runner-target spec-file) opts))
+  (rspec-compile spec-file opts))
 
 (defun rspec-compile (a-file-or-dir &optional opts)
   "Runs a compile for the specified file or diretory with the specified opts"
